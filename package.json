@@ -1,10 +1,10 @@
 {
-  "name": "boilerplate",
+  "name": "BylawMapService",
   "version": "1.0.0",
-  "description": "simple js boilerplate with webpack",
+  "description": "Bylaw map service to search by address or tile",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack serve --open --mode development",
+    "dev": "npx webpack serve --open --mode development",
     "start": "node server.js",
     "build": "webpack"
   },
@@ -21,5 +21,8 @@
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1",
     "webpack-dev-server": "^4.15.0"
+  },
+  "dependencies": {
+    "@arcgis/core": "^4.26.5"
   }
 }

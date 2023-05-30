@@ -18,7 +18,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "src/index.html",
-      title: "Boilerplate Document",
+      title: "Bylaw Map Service",
     }),
   ],
   module: {
