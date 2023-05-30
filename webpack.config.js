@@ -15,6 +15,12 @@ module.exports = {
     port: 8080,
     hot: true,
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src/index.html",
+      title: "Boilerplate Document",
+    }),
+  ],
   module: {
     rules: [
       {
@@ -27,13 +33,10 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
-
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "src/index.html",
-      title: "Boilerplate Document",
-    }),
-  ],
 };
