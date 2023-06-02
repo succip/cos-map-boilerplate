@@ -5,9 +5,13 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import TileLayer from "@arcgis/core/layers/TileLayer";
 import Search from "@arcgis/core/widgets/Search";
 import Query from "@arcgis/core/rest/support/Query.js";
-import { startPoint, tileResultSymbol } from "./config/Constants";
+import $ from "jquery";
+import { START_POINT, ADDRESS_RESULT_SYMBOL, TILE_RESULT_SYMBOL } from "./config/constants";
+import { fetchAddressReport } from "./utils/fetchData";
 import "./styles/normalize.css";
 import "./styles/style.css";
+
+const txtInfo = $("#infoText");
 
 const basemap = new Basemap({
   baseLayers: [
@@ -28,7 +32,7 @@ const view = new MapView({
   map,
   container: "viewDiv",
   zoom: 7,
-  center: startPoint,
+  center: START_POINT,
 });
 
 const lyrLots = new FeatureLayer({
@@ -76,18 +80,11 @@ const searchWidget = new Search({
     {
       url: "https://gisservices.surrey.ca/arcgis/rest/services/AddressSuggest/GeocodeServer",
       name: "Surrey Addresses",
-      resultSymbol: {
-        type: "simple-marker",
-        color: "red",
-        outline: {
-          color: [255, 255, 255],
-          width: 1,
-        },
-      },
+      resultSymbol: ADDRESS_RESULT_SYMBOL,
     },
     {
       layer: lyrMapIndex,
-      resultSymbol: tileResultSymbol,
+      resultSymbol: TILE_RESULT_SYMBOL,
       name: "Surrey Map Tiles",
     },
   ],
@@ -106,6 +103,8 @@ view.when(() => {
     if (searchSourceIndex === 0) {
       const address = event.results[0].results[0].name.toUpperCase();
       const mslink = await getMslink(event.results[0].results[0].feature);
+      txtInfo.text(`address: ${address}, mslink: ${mslink}`);
+      fetchAddressReport(address, mslink);
     }
   });
 });
