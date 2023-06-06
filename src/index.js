@@ -104,7 +104,6 @@ view.when(() => {
       const address = event.results[0].results[0].name.toUpperCase();
       const mslink = await getMslink(event.results[0].results[0].feature);
       txtInfo.text(`address: ${address}, mslink: ${mslink}`);
-      fetchAddressReport(address, mslink);
     }
   });
 });
