@@ -1,6 +1,7 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js", // Update with your entry file path
@@ -21,6 +22,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
       title: "Bylaw Map Service",
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "**",
+          context: "node_modules/@esri/calcite-components/dist/calcite/",
+          to: "./",
+        },
+      ],
     }),
   ],
   module: {

@@ -7,9 +7,13 @@ import Search from "@arcgis/core/widgets/Search";
 import Query from "@arcgis/core/rest/support/Query.js";
 import $ from "jquery";
 import { START_POINT, ADDRESS_RESULT_SYMBOL, TILE_RESULT_SYMBOL } from "./config/constants";
-import { fetchAddressReport } from "./utils/fetchData";
+
 import "./styles/normalize.css";
 import "./styles/style.css";
+import "@esri/calcite-components/dist/components/calcite-button";
+import "@esri/calcite-components/dist/calcite/calcite.css";
+import { setAssetPath } from "@esri/calcite-components/dist/components";
+setAssetPath(location.href);
 
 const txtInfo = $("#infoText");
 
@@ -104,6 +108,10 @@ view.when(() => {
       const address = event.results[0].results[0].name.toUpperCase();
       const mslink = await getMslink(event.results[0].results[0].feature);
       txtInfo.text(`address: ${address}, mslink: ${mslink}`);
+    } else {
+      const tileNumber = event.results[0].results[0].name;
+      txtInfo.text(`Tile number: ${tileNumber}`);
+      // fetchTileReport(tileNumber);
     }
   });
 });
