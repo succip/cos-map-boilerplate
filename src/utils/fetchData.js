@@ -22,9 +22,9 @@ export async function fetchAddressReport(address, mslink) {
 
   try {
     const { data } = await axios.get(url, config);
-    console.log(data.serviceResponse.url);
+    return data.serviceResponse.url;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 }
 
@@ -47,8 +47,8 @@ export async function fetchTileReport(tileNumber) {
   try {
     console.log("Sending tile request...");
     const { data } = await axios.get(url, config);
-    console.log(data.serviceResponse.url);
+    return data.serviceResponse.url;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 }

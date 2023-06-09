@@ -7,6 +7,7 @@ import Search from "@arcgis/core/widgets/Search";
 import Query from "@arcgis/core/rest/support/Query.js";
 import $ from "jquery";
 import { START_POINT, ADDRESS_RESULT_SYMBOL, TILE_RESULT_SYMBOL } from "./config/constants";
+import { fetchAddressReport, fetchTileReport } from "./utils/fetchData";
 
 import "./styles/normalize.css";
 import "./styles/style.css";
@@ -15,7 +16,23 @@ import "@esri/calcite-components/dist/calcite/calcite.css";
 import { setAssetPath } from "@esri/calcite-components/dist/components";
 setAssetPath(location.href);
 
+let address, mslink, tileNumber, reportType;
+
 const txtInfo = $("#infoText");
+const btnGenerate = $("#btnGenerate");
+
+btnGenerate.on("click", async () => {
+  disableBtnGenerate();
+  if (reportType === "address") {
+    fetchAddressReport(address, mslink);
+  } else {
+    const downloadUrl = await fetchTileReport(tileNumber);
+    console.log("Download url", downloadUrl);
+  }
+});
+
+const disableBtnGenerate = () => btnGenerate.attr("disabled", "disabled");
+const enableBtnGenerate = () => btnGenerate.removeAttr("disabled");
 
 const basemap = new Basemap({
   baseLayers: [
@@ -103,16 +120,16 @@ map.add(lyrLots, lyrMapIndex);
 
 view.when(() => {
   searchWidget.on("search-complete", async (event) => {
-    const searchSourceIndex = event.results[0].results[0].sourceIndex;
-    if (searchSourceIndex === 0) {
-      const address = event.results[0].results[0].name.toUpperCase();
-      const mslink = await getMslink(event.results[0].results[0].feature);
+    reportType = event.results[0].results[0].sourceIndex === 0 ? "address" : "tile";
+    if (reportType === "address") {
+      address = event.results[0].results[0].name.toUpperCase();
+      mslink = await getMslink(event.results[0].results[0].feature);
       txtInfo.text(`address: ${address}, mslink: ${mslink}`);
-    } else {
-      const tileNumber = event.results[0].results[0].name;
+    } else if (reportType === "tile") {
+      tileNumber = event.results[0].results[0].name;
       txtInfo.text(`Tile number: ${tileNumber}`);
-      // fetchTileReport(tileNumber);
     }
+    enableBtnGenerate();
   });
 });
 
