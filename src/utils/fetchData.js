@@ -45,7 +45,6 @@ export async function fetchTileReport(tileNumber) {
   const config = { params, headers };
 
   try {
-    console.log("Sending tile request...");
     const { data } = await axios.get(url, config);
     return data.serviceResponse.url;
   } catch (error) {

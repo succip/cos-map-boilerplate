@@ -24,10 +24,13 @@ const btnGenerate = $("#btnGenerate");
 btnGenerate.on("click", async () => {
   disableBtnGenerate();
   if (reportType === "address") {
-    fetchAddressReport(address, mslink);
+    const downloadUrl = await fetchAddressReport(address, mslink);
+    txtInfo.text(downloadUrl);
+    enableBtnGenerate();
   } else {
     const downloadUrl = await fetchTileReport(tileNumber);
-    console.log("Download url", downloadUrl);
+    txtInfo.text(downloadUrl);
+    enableBtnGenerate();
   }
 });
 
