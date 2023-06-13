@@ -19,18 +19,31 @@ setAssetPath(location.href);
 let address, mslink, tileNumber, reportType;
 
 const txtInfo = $("#infoText");
+const spanDownloadLink = $("#downloadLink");
+const loader = $("#loader");
 const btnGenerate = $("#btnGenerate");
 
 btnGenerate.on("click", async () => {
   disableBtnGenerate();
-  if (reportType === "address") {
-    const downloadUrl = await fetchAddressReport(address, mslink);
-    txtInfo.text(downloadUrl);
+  try {
+    loader.show();
+    if (reportType === "address") {
+      const downloadUrl = await fetchAddressReport(address, mslink);
+      spanDownloadLink.html(
+        `Your map is ready! <a href=${downloadUrl}>Click here to download it.</a>`
+      );
+      enableBtnGenerate();
+    } else {
+      const downloadUrl = await fetchTileReport(tileNumber);
+      spanDownloadLink.html(
+        `Your map is ready! <a href=${downloadUrl}>Click here to download it.</a>`
+      );
+    }
+  } catch {
+    spanDownloadLink.html("Error occurred! Contact Paolo.Succi@Surrey.ca");
+  } finally {
     enableBtnGenerate();
-  } else {
-    const downloadUrl = await fetchTileReport(tileNumber);
-    txtInfo.text(downloadUrl);
-    enableBtnGenerate();
+    loader.hide();
   }
 });
 
@@ -127,7 +140,7 @@ view.when(() => {
     if (reportType === "address") {
       address = event.results[0].results[0].name.toUpperCase();
       mslink = await getMslink(event.results[0].results[0].feature);
-      txtInfo.text(`address: ${address}, mslink: ${mslink}`);
+      txtInfo.text(address);
     } else if (reportType === "tile") {
       tileNumber = event.results[0].results[0].name;
       txtInfo.text(`Tile number: ${tileNumber}`);

@@ -48,6 +48,6 @@ export async function fetchTileReport(tileNumber) {
     const { data } = await axios.get(url, config);
     return data.serviceResponse.url;
   } catch (error) {
-    return error;
+    return new Error(error);
   }
 }
