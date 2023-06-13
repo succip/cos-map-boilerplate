@@ -22,7 +22,7 @@ module.exports = {
     new Dotenv(),
     new HtmlWebpackPlugin({
       template: "src/index.html",
-      title: "Bylaw Map Service",
+      title: "COS WebMap Boilerplate",
     }),
     new CopyPlugin({
       patterns: [

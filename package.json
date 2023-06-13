@@ -1,7 +1,7 @@
 {
-  "name": "BylawMapService",
+  "name": "COS WebMap Boilerplate",
   "version": "1.0.0",
-  "description": "Bylaw map service to search by address or tile",
+  "description": "Simple COS WebMap boilerplate",
   "main": "index.js",
   "scripts": {
     "dev": "npx webpack serve --open --mode development",
